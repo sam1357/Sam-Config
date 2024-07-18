@@ -1,0 +1,100 @@
+filter (\x -> length x == 7) (toList $ filterPlayables aeintsr_rack t)
+toList $ filterPlayables aeintsr_rack t
+filterPlayables aeintsr_rack t
+t
+t <- dictionaryFromFile "CSW19.txt"
+t <- dictionaryFromFile "CSW19"
+t
+t < dictionaryFromFile "CSW19"
+t
+filterPlayables t
+drawBoard dog_board
+runChecks 
+runChecks 
+runChecks 
+runChecks 
+runChecks 
+runChecks 
+runChecks 
+:r
+runChecks 
+runChecks 
+filterLength (-20) t
+t
+let t = fromList ["he", "hi"]
+filterLength (-20) (Trie False (['a', Trie False []]))
+filterLength (-20) empty
+filterLength -20 empty
+:r
+verboseCheck filterLengthProp 
+runChecks 
+:r
+runChecks 
+runCH
+:r
+filterLength (-1) empty
+filterLength -1 empty
+:r
+runChecks 
+:r
+runChecks 
+:r
+runChecks 
+:r
+runChecks 
+:r
+runChecks 
+toList $ filterPlayables rack t
+let rack = [Blank, Letter 'a', Letter 'b']
+toList $ filterPlayables aeintsr_rack t
+filterPlayables aeintsr_rack t
+filterPlayables r t
+aeintsr_rack 
+  ]aeintsr_rack 
+   Letter 'r'
+   Letter 't',
+   Letter 's',
+   Letter 'n',
+   Letter 'i',
+   Letter 'e',
+  [Letter 'a',
+let r = aeintsr_rack =
+aeinstr_rack
+toList $ filterPattern p t
+filterPattern p t
+let p = [Wildcard, Mem "abc", Mem "def", Mem "aeiou"]
+filterPattern p t
+let p = [Wildcard, Mem "abc", Mem "def", Mem "g"]
+filterPattern p t
+let p = [Wildcard, Mem "abc", Mem "def", Mem "g", Mem "qp"]
+toList $ filterPattern p t
+filterPattern p t
+let p = [Wildcard, Mem "abc", Mem "def"]
+t <- dictionaryFromFile "CSW19.txt"
+:r
+toList $ filterPattern p t
+filterPattern p t
+let p = [Wildcard, Mem "abc", Mem "def"]
+toList $ filterLength 16clear t
+toList $ filterLength 16 t
+toList $ filterLength 15 t
+toList $ filterLength 17 t
+toList $ filterLength 18 t
+toList $ filterLength 19 t
+toList $ filterLength 20 t
+toList $ filterLength 10 t
+toList $ filterLength 2 t
+filterLength 2 t
+filterLength 1 t
+all (\x -> length x == 8) (toList $ filterLength 8 t)
+all (\x -> length x == 7) (toList $ filterLength 7 t)
+all (\x -> length x == 6) (toList $ filterLength 6 t)
+all (\x -> length x == 5) (toList $ filterLength 5 t)
+all (length == 5) (toList $ filterLength 5 t)
+toList $ filterLength 5 t
+toList $ filterLength 4 t
+toList $ filterLength 5 t
+t <- dictionaryFromFile "CSW19.txt"
+t
+:r
+toList $ filterLength 5 t
