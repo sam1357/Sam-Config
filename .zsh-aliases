@@ -1,11 +1,15 @@
 ######################### GENERAL ALIASES #############################
-alias mocserver="ssh moc@moc-server.masterofcubesau.com"
 alias py="python3"
 alias v="nvim"
 alias vim="nvim"
 
 alias c="z"
 alias cd="z"
+alias d="docker"
+alias dc="docker compose"
+alias dcu="docker compose up -d"
+alias dcub="docker compose up --build -d"
+alias dcd="docker compose down"
 alias k="kubectl"
 alias kc="kubectx"
 alias kn="kubens"

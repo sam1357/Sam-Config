@@ -10,3 +10,5 @@ zmodule romkatv/zsh-defer -d
 zmodule ohmyzsh/ohmyzsh --root plugins/git
 
 zmodule Aloxaf/fzf-tab
+zmodule mroth/evalcache
+
