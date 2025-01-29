@@ -1,195 +1,146 @@
-[aws]
-format = '\[[$symbol($profile)(\($region\))(\[$duration\])]($style)\]'
+"$schema" = 'https://starship.rs/config-schema.json'
 
-[bun]
-format = '\[[$symbol($version)]($style)\]'
+format = """
+[╭](fg:current_line)\
+$directory\
+$git_branch\
+$git_status\
+$git_state\
+$git_metrics\
+$fill\
+$status\
+$cmd_duration\
+$kubernetes\
+$golang\
+$nodejs\
+$python\
+$gradle\
+$java\
+$rust\
+$c\
+$lua\
+$line_break\
+$character\
+"""
 
-[c]
-format = '\[[$symbol($version(-$name))]($style)\]'
+palette = 'catppuccin_mocha'
+add_newline = true
 
-[cmake]
-format = '\[[$symbol($version)]($style)\]'
+[palettes.catppuccin_mocha]
+foreground = '#D9E0EE'
+background = '#1E1E2E'
+current_line = '#5C5C5C'
+primary = '#313244'
+box = '#2F2F2F'
+blue = '#8AADF4'
+cyan = '#76E3F6'
+green = '#A6E3A1'
+orange = '#F9AF74'
+pink = '#F5BDE6'
+purple = '#CBA6F7'
+red = '#F38BA8'
+yellow = '#F9E2AF'
+status = "#e23140"
+sapphire = "#74c7ec"
+lavender = "#b4befe"
+peach = "#fab387"
 
-[cmd_duration]
-format = '\[[⏱ $duration]($style)\]'
-
-[cobol]
-format = '\[[$symbol($version)]($style)\]'
-
-[conda]
-format = '\[[$symbol$environment]($style)\]'
-
-[crystal]
-format = '\[[$symbol($version)]($style)\]'
-
-[daml]
-format = '\[[$symbol($version)]($style)\]'
-
-[dart]
-format = '\[[$symbol($version)]($style)\]'
+[status]
+format = "[─](fg:current_line)[](fg:status)[ ](fg:primary bg:status)[](fg:status bg:box)[ $status](fg:foreground bg:box)[](fg:box)"
+pipestatus = true
+pipestatus_separator = "-"
+pipestatus_segment_format = "$status"
+pipestatus_format = "[─](fg:current_line)[](fg:status)[ ](fg:primary bg:status)[](fg:status bg:box)[ $pipestatus](fg:foreground bg:box)[](fg:box)"
+disabled = false
 
 [directory]
-truncation_length = 10
-truncate_to_repo = false 
-
-[deno]
-format = '\[[$symbol($version)]($style)\]'
-
-[docker_context]
-format = '\[[$symbol$context]($style)\]'
-
-[dotnet]
-format = '\[[$symbol($version)(🎯 $tfm)]($style)\]'
-
-[elixir]
-format = '\[[$symbol($version \(OTP $otp_version\))]($style)\]'
-
-[elm]
-format = '\[[$symbol($version)]($style)\]'
-
-[erlang]
-format = '\[[$symbol($version)]($style)\]'
-
-[fennel]
-format = '\[[$symbol($version)]($style)\]'
-
-[fossil_branch]
-format = '\[[$symbol$branch]($style)\]'
-
-[gcloud]
-format = '\[[$symbol$account(@$domain)(\($region\))]($style)\]'
+format = '[─](fg:current_line)[](fg:pink)[󰷏 ](fg:primary bg:pink)[](fg:pink bg:box)[ $read_only$truncation_symbol$path](fg:foreground bg:box)[](fg:box)'
+home_symbol = " ~/"
+truncation_symbol = ' '
+truncation_length = 2
+read_only = '󱧵 '
+read_only_style = ''
 
 [git_branch]
-format = '\[[$symbol$branch]($style)\]'
+format = '[─](fg:current_line)[](fg:green)[$symbol](fg:primary bg:green)[](fg:green bg:box)[ $branch ](fg:foreground bg:box)'
+symbol = '󰊢 '
+
+[git_state]
+format = '[\([[$state](fg:peach bg:box)( $progress_current/$progress_total)](bg:box)\) ](bg:box)'
+style = "fg"
+cherry_pick = '[🍒PICKING](red)'
 
 [git_status]
-format = '([\[$all_status$ahead_behind\]]($style))'
+ahead = '[⇡ ${count}](fg:lavender bg:box) '
+behind = '⇣ ${count}'
+conflicted = '🏳 ' 
+deleted = '󰗨 ${count} '
+diverged = '⇕ ⇡${ahead_count}⇣${behind_count} '
+format = "[$all_status](fg:green bg:box)"
+modified = '[ ${count}](fg:peach bg:box) '
+renamed = '»'
+staged = '[+$count](fg:green bg:box) '
+stashed = " ${count} "
+style = "red"
+untracked = "[ ${count}](fg:sapphire bg:box) "
+up_to_date = ''
 
-[golang]
-format = '\[[$symbol($version)]($style)\]'
-
-[gradle]
-format = '\[[$symbol($version)]($style)\]'
-
-[guix_shell]
-format = '\[[$symbol]($style)\]'
-
-[haskell]
-format = '\[[$symbol($version)]($style)\]'
-
-[haxe]
-format = '\[[$symbol($version)]($style)\]'
-
-[helm]
-format = '\[[$symbol($version)]($style)\]'
-
-[hg_branch]
-format = '\[[$symbol$branch]($style)\]'
-
-[java]
-format = '\[[$symbol($version)]($style)\]'
-
-[julia]
-format = '\[[$symbol($version)]($style)\]'
-
-[kotlin]
-format = '\[[$symbol($version)]($style)\]'
-
-[kubernetes]
-format = '\[[$symbol$context( \($namespace\))]($style)\]'
-
-[lua]
-format = '\[[$symbol($version)]($style)\]'
-
-[memory_usage]
-format = '\[$symbol[$ram( | $swap)]($style)\]'
-
-[meson]
-format = '\[[$symbol$project]($style)\]'
-
-[nim]
-format = '\[[$symbol($version)]($style)\]'
-
-[nix_shell]
-format = '\[[$symbol$state( \($name\))]($style)\]'
+[git_metrics]
+disabled = false
+format = '[+$added](fg:green bg:box)[/](bg:box)[-$deleted](fg:red bg:box)[](fg:box)'
+only_nonzero_diffs = true
 
 [nodejs]
-format = '\[[$symbol($version)]($style)\]'
-
-[ocaml]
-format = '\[[$symbol($version)(\($switch_indicator$switch_name\))]($style)\]'
-
-[opa]
-format = '\[[$symbol($version)]($style)\]'
-
-[openstack]
-format = '\[[$symbol$cloud(\($project\))]($style)\]'
-
-[os]
-format = '\[[$symbol]($style)\]'
-
-[package]
-format = '\[[$symbol$version]($style)\]'
-
-[perl]
-format = '\[[$symbol($version)]($style)\]'
-
-[php]
-format = '\[[$symbol($version)]($style)\]'
-
-[pijul_channel]
-format = '\[[$symbol$channel]($style)\]'
-
-[pulumi]
-format = '\[[$symbol$stack]($style)\]'
-
-[purescript]
-format = '\[[$symbol($version)]($style)\]'
-
-[python]
-format = '\[[${symbol}${pyenv_prefix}(${version})(\($virtualenv\))]($style)\]'
-
-[raku]
-format = '\[[$symbol($version-$vm_version)]($style)\]'
-
-[red]
-format = '\[[$symbol($version)]($style)\]'
-
-[ruby]
-format = '\[[$symbol($version)]($style)\]'
+format = '[─](fg:current_line)[](fg:green)[$symbol](fg:primary bg:green)[](fg:green bg:box)[ $version](fg:foreground bg:box)[](fg:box)'
+symbol = '󰎙 Node.js'
 
 [rust]
-format = '\[[$symbol($version)]($style)\]'
+format = '[─](fg:current_line)[](fg:red)[$symbol](fg:primary bg:red)[](fg:red bg:box)[ $version](fg:foreground bg:box)[](fg:box)'
+symbol = ' Rust'
 
-[scala]
-format = '\[[$symbol($version)]($style)\]'
+[python]
+format = '[─](fg:current_line)[](fg:blue)[$symbol](fg:primary bg:blue)[](fg:blue bg:box)[ (${version} )(\($virtualenv\) )](fg:foreground bg:box)[](fg:box)'
+symbol = ' Python'
 
-[spack]
-format = '\[[$symbol$environment]($style)\]'
+[java]
+format = '[─](fg:current_line)[](fg:red)[$symbol](fg:primary bg:red)[](fg:red bg:box)[ $version](fg:foreground bg:box)[](fg:box)'
+symbol = ' Java'
 
-[sudo]
-format = '\[[as $symbol]($style)\]'
+[gradle]
+format = '[─](fg:current_line)[](fg:blue)[$symbol](fg:primary bg:blue)[](fg:blue bg:box)[ $version](fg:foreground bg:box)[](fg:box)'
+symbol = ' Gradle'
 
-[swift]
-format = '\[[$symbol($version)]($style)\]'
+[golang]
+format = '[─](fg:current_line)[](fg:cyan)[$symbol](fg:primary bg:cyan)[](fg:cyan bg:box)[ $version](fg:foreground bg:box)[](fg:box)'
+symbol = ' Go'
 
-[terraform]
-format = '\[[$symbol$workspace]($style)\]'
+[c]
+format = '[─](fg:current_line)[](fg:blue)[$symbol](fg:primary bg:blue)[](fg:blue bg:box)[ $version](fg:foreground bg:box)[](fg:box)'
+symbol = ' C'
 
-[time]
-format = '\[[$time]($style)\]'
+[lua]
+format = '[─](fg:current_line)[](fg:yellow)[$symbol](fg:primary bg:yellow)[](fg:yellow bg:box)'
+symbol = '🌙 Lua'
 
-[username]
-format = '\[[$user]($style)\]'
+[kubernetes]
+format = '[─](fg:current_line)[](fg:purple)[$symbol](fg:primary bg:purple)[](fg:purple bg:box)[ $namespace ](fg:foreground bg:box)[](fg:box)'
+symbol = ' K8s'
+disabled = false
+detect_folders = ["infra"]
 
-[vagrant]
-format = '\[[$symbol($version)]($style)\]'
+[fill]
+symbol = '─'
+style = 'fg:current_line'
 
-[vlang]
-format = '\[[$symbol($version)]($style)\]'
+[cmd_duration]
+min_time = 500
+format = '[─](fg:current_line)[](fg:orange)[](fg:primary bg:orange)[](fg:orange bg:box)[ $duration](fg:foreground bg:box)[](fg:box)'
 
-[zig]
-format = '\[[$symbol($version)]($style)\]'
+[character]
+format = """
+[╰─$symbol](fg:current_line) """
+success_symbol = '[](fg:bold green)'
+error_symbol = '[](fg:bold red)'
 
-[solidity]
-format = '\[[$symbol($version)]($style)\]'
+[profiles]
+transient = """$character"""

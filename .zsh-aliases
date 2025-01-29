@@ -1,9 +1,16 @@
-alias csemount="sshfs -o idmap=user -C ${_SSHFS_ZID}@login${_SSHFS_ZID: -1}.cse.unsw.edu.au: ${_SSHFS_CSE_MOUNT}"
-alias cseunmount="fusermount -zu ${_SSHFS_CSE_MOUNT}"
+######################### GENERAL ALIASES #############################
 alias mocserver="ssh moc@moc-server.masterofcubesau.com"
 alias py="python3"
 alias v="nvim"
+alias vim="nvim"
+
+alias c="z"
+alias cd="z"
+alias k="kubectl"
+alias kc="kubectx"
+alias kn="kubens"
 alias cl="clear"
+############################# LS ALIASES #############################
 alias ld="eza -lD --icons"
 alias lf="eza -lf --color=always --icons | grep -v /"
 alias lh="eza -dl .* --group-directories-first --icons"
@@ -11,7 +18,5 @@ alias ll="eza -al --group-directories-first --icons"
 alias ls="eza --color=always --sort=size --icons"
 alias l="eza -l --color=always --sort=size --icons"
 alias lt="eza -al --sort=modified --icons"
-alias c="z"
-alias cd="z"
+######################## GIT ALIASES #################################
 alias goops="git commit --amend --no-edit"
-

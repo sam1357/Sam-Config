@@ -1,7 +1,25 @@
-export ZSH="$HOME/.oh-my-zsh"
-export PATH="$HOME/.local/bin:$PATH"
-plugins=(git docker zsh-autosuggestions fast-syntax-highlighting)
-source $ZSH/oh-my-zsh.sh
+############################################# ZIM ###########################################
+ZIM_HOME=~/.zim
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt appendhistory
+
+# Download zimfw plugin manager if missing.
+if [[ ! -e ${ZIM_HOME}/zimfw.zsh ]]; then
+  curl -fsSL --create-dirs -o ${ZIM_HOME}/zimfw.zsh \
+      https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
+fi
+
+source ${ZIM_HOME}/modules/zsh-defer/zsh-defer.plugin.zsh
+
+# Install missing modules and update ${ZIM_HOME}/init.zsh if missing or outdated.
+if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZIM_CONFIG_FILE:-${ZDOTDIR:-${HOME}}/.zimrc} ]]; then
+  zsh-defer source ${ZIM_HOME}/zimfw.zsh init -q
+fi
+
+# Initialize modules.
+zsh-defer source ${ZIM_HOME}/init.zsh
 ########################################### ALIASES #########################################
 source ~/.zsh-aliases
 ############################################## CSE ##########################################
@@ -30,27 +48,37 @@ function cse() {
         fi
     fi
 }
-########################################### PATHS ##########################################
+########################################### PATHS/EXPORTS ##################################
 export PNPM_HOME="/home/sam1357/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
+
 export GOROOT=/usr/local/go
 export GOPATH=$HOME/go
+export PATH="$HOME/.local/bin:$PATH"
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 export PATH=~/bin:$PATH
-export PATH="$PATH:/opt/nvim-linux64/bin"
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+export PATH="$PATH:/usr/local/bin/nvim-linux64/bin"
+export PATH="$PATH:/opt/gradle/gradle-8.8/bin"
 export FPATH="<path_to_eza>/completions/zsh:$FPATH"
+export PYENV_ROOT="$HOME/.pyenv"
+
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+. "$HOME/.cargo/env"
+
+FNM_PATH="/home/sam1357/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="/home/sam1357/.local/share/fnm:$PATH"
+  zsh-defer eval "`fnm env`"
+fi
 ######################################## EVALS #############################################
 eval "$(starship init zsh)"
-eval "$(zoxide init zsh)"
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+zsh-defer eval "$(zoxide init zsh)"
+zsh-defer eval "$(pyenv init - zsh)"
+zsh-defer eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 ########################################### SOURCES ########################################
 source /usr/share/doc/fzf/examples/key-bindings.zsh
 source /usr/share/doc/fzf/examples/completion.zsh
- 
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
