@@ -1,27 +1,29 @@
 #!/bin/bash
 
 set -eo pipefail
-set +u
+set +u # Unset variables are allowed
 
 functions=(
   update_dependencies
+  install_apt_apps
   install_homebrew
   install_zsh
   install_docker
   install_kubernetes
   install_go
   install_zoxide
+  install_fnm
   install_eza
   install_starship
   install_build_essential
-  install_apt_apps
   install_brew_apps
   install_helm_plugins
   install_and_configure_nvim
   install_gradle
   install_rust
+  install_pyenv
   configure_dotfiles
-  create_ssh_key
+  install_zimfw
 )
 
 log() {
@@ -81,53 +83,43 @@ install_zsh() {
 
   if [[ "$SHELL" != "$(which zsh)" ]]; then
     log "Changing default shell to Zsh..."
-    chsh -s "$(which zsh)"
+    sudo sed -i "s|$(grep $(whoami) /etc/passwd | cut -d: -f7)|$(which zsh)|" /etc/passwd
     log "Default shell changed to Zsh."
   else
     log "Default shell is already Zsh."
   fi
-
-  log "Installing Zim..."
-  curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
-  log "Zim installation completed."
 }
 
 install_docker() {
-  echo "Do you want to install Docker? (y/n) Select 'n' if you are running WSL2."
-  read -r install_docker
-  if [ "$install_docker" == "y" ]; then
-    log "Installing Docker..."
-    sudo apt-get update
-    sudo apt-get install -y ca-certificates curl
-    sudo install -m 0755 -d /etc/apt/keyrings
-    sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-    sudo chmod a+r /etc/apt/keyrings/docker.asc
+  log "Installing Docker..."
+  sudo apt-get update
+  sudo apt-get install -y ca-certificates curl
+  sudo install -m 0755 -d /etc/apt/keyrings
+  sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+  sudo chmod a+r /etc/apt/keyrings/docker.asc
 
-    echo \
-      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-      $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-    sudo apt-get update
+  echo \
+    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+    sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  sudo apt-get update
 
-    sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-    sudo groupadd docker
-    sudo usermod -aG docker "$USER"
-    log "Docker installation completed."
-  else 
-    log "Skipping Docker installation."
-  fi
+  sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+  sudo usermod -aG docker "$USER"
+  log "Docker installation completed."
 }
 
 install_kubernetes() {
   log "Installing Kubernetes..."
   curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
   sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+  rm kubectl
   log "Kubernetes installation completed."
 }
 
 install_go() {
   log "Installing the latest version of Go..."
-  GO_VERSION=$(curl -s https://go.dev/VERSION?m=text)
+  GO_VERSION=$(curl -s "https://go.dev/VERSION?m=text" | head -n1)
   GO_TAR="$GO_VERSION.linux-amd64.tar.gz"
   GO_URL="https://dl.google.com/go/$GO_TAR"
 
@@ -166,6 +158,12 @@ install_starship() {
   log "Starship installation completed."
 }
 
+install_fnm() {
+  log "Installing fnm..."
+  curl -fsSL https://fnm.vercel.app/install | bash
+  log "fnm installation completed."
+}
+
 install_build_essential() {
   log "Installing build-essential tools..."
   sudo apt install -y build-essential
@@ -173,13 +171,14 @@ install_build_essential() {
 }
 
 install_apt_apps() {
-  log "Installing Fzf, Jq, Yq, SSHFS, Unzip and OpenJDK 17..."
-  sudo apt install -y fzf jq openjdk-17-jdk unzip
-  log "Fzf, Jq, SSHFS, Unzip and OpenJDK 17 installation completed."
+  log "Installing Git, Fzf, Jq, Yq, SSHFS, Unzip and OpenJDK 17..."
+  sudo apt install -y git fzf jq openjdk-17-jdk unzip
+  log "Git, Fzf, Jq, SSHFS, Unzip and OpenJDK 17 installation completed."
 }
 
 install_brew_apps() {
   log "Installing Pnpm, Kubectl, and Helm..."
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
   brew install pnpm kubectx helm 
   log "Pnpm, Kubectl, and Helm installation completed."
 }
@@ -196,10 +195,11 @@ install_and_configure_nvim() {
   curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
   sudo rm -rf /opt/nvim
   sudo tar -C /opt -xzf nvim-linux64.tar.gz
+  rm nvim-linux64.tar.gz
   log "Setting Neovim as default editor..."
   git config --global core.editor "nvim"
-  sudo update-alternatives --install /usr/bin/editor editor /usr/local/bin/nvim-linux64/bin/nvim 100
-  sudo update-alternatives --set editor /usr/local/bin/nvim-linux64/bin/nvim
+  sudo update-alternatives --install /usr/bin/editor editor /opt/nvim-linux64/bin/nvim 100
+  sudo update-alternatives --set editor /opt/nvim-linux64/bin/nvim
   log "Neovim installation completed."
 }
 
@@ -221,6 +221,7 @@ install_rust() {
 configure_dotfiles() {
   log "Cloning dotfiles..."
   git clone https://github.com/sam1357/Sam-Config ~/tmp/Sam-Config
+  mkdir -p ~/.config
   mv ~/tmp/Sam-Config/.zshrc ~/.zshrc
   mv ~/tmp/Sam-Config/.zsh-aliases ~/.zsh-aliases
   mv ~/tmp/Sam-Config/.zimrc ~/.zimrc
@@ -230,12 +231,16 @@ configure_dotfiles() {
   log "Dotfiles cloned and moved."
 }
 
-create_ssh_key() {
-  log "Creating SSH key..."
-  ssh-keygen -t ed25519 -C "your_email@example.com" -f ~/.ssh/id_ed25519 -N ""
-  sudo apt install -y xsel
-  cat ~/.ssh/id_ed25519.pub | xsel -b
-  log "SSH key created and copied to clipboard."
+install_zimfw() {
+  log "Installing Zim..."
+  curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
+  log "Zim installation completed."
+}
+
+install_pyenv() {
+  log "Installing Pyenv..."
+  curl -fsSL https://pyenv.run | bash
+  log "Pyenv installation completed."
 }
 
 run_functions() {
@@ -275,6 +280,7 @@ main() {
   detect_os
   run_functions "$@"
   log "Bootstrap completed. Restarting shell..."
+  log "You will need to restart/log out and log back in to apply changes."
   exec zsh
 }
 

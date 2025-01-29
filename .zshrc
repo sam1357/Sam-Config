@@ -11,12 +11,13 @@ if [[ ! -e ${ZIM_HOME}/zimfw.zsh ]]; then
       https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
 fi
 
-source ${ZIM_HOME}/modules/zsh-defer/zsh-defer.plugin.zsh
-
 # Install missing modules and update ${ZIM_HOME}/init.zsh if missing or outdated.
 if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZIM_CONFIG_FILE:-${ZDOTDIR:-${HOME}}/.zimrc} ]]; then
-  zsh-defer source ${ZIM_HOME}/zimfw.zsh init -q
+  source ${ZIM_HOME}/zimfw.zsh init -q
 fi
+
+source ${ZIM_HOME}/modules/evalcache/evalcache.plugin.zsh
+source ${ZIM_HOME}/modules/zsh-defer/zsh-defer.plugin.zsh
 
 # Initialize modules.
 zsh-defer source ${ZIM_HOME}/init.zsh
@@ -60,25 +61,23 @@ export GOPATH=$HOME/go
 export PATH="$HOME/.local/bin:$PATH"
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 export PATH=~/bin:$PATH
-export PATH="$PATH:/usr/local/bin/nvim-linux64/bin"
+export PATH="$PATH:/opt/nvim-linux64/bin"
 export PATH="$PATH:/opt/gradle/gradle-8.8/bin"
 export FPATH="<path_to_eza>/completions/zsh:$FPATH"
 export PYENV_ROOT="$HOME/.pyenv"
-
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+
 . "$HOME/.cargo/env"
 
 FNM_PATH="/home/sam1357/.local/share/fnm"
 if [ -d "$FNM_PATH" ]; then
   export PATH="/home/sam1357/.local/share/fnm:$PATH"
-  zsh-defer eval "`fnm env`"
+  zsh-defer _evalcache fnm env
 fi
 ######################################## EVALS #############################################
-eval "$(starship init zsh)"
-zsh-defer eval "$(zoxide init zsh)"
-zsh-defer eval "$(pyenv init - zsh)"
-zsh-defer eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+_evalcache starship init zsh
+zsh-defer _evalcache zoxide init zsh
+zsh-defer _evalcache pyenv init - zsh
+zsh-defer _evalcache /home/linuxbrew/.linuxbrew/bin/brew shellenv
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-########################################### SOURCES ########################################
-source /usr/share/doc/fzf/examples/key-bindings.zsh
-source /usr/share/doc/fzf/examples/completion.zsh
+zsh-defer _evalcache kubectl completion zsh

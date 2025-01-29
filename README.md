@@ -8,7 +8,9 @@ Currently this only supports Ubuntu.
 
 ## Running the bootstrap script
 
-`curl -fssL https://raw.githubusercontent.com/sam1357/Sam-Config/refs/heads/main/bootstrap.sh | bash`
+```
+curl -fssL https://raw.githubusercontent.com/sam1357/Sam-Config/refs/heads/main/bootstrap.sh | bash
+```
 
 ## Manual installation notes
 
@@ -26,14 +28,20 @@ Currently this only supports Ubuntu.
 - [`go`](https://golang.org/doc/install)
 - [`gradle`](https://gradle.org/install/)
 - [`rust`](https://www.rust-lang.org/tools/install)
+- [`fnm`](https://github.com/Schniz/fnm?tab=readme-ov-file#installation)
+- [`pyenv`](https://github.com/pyenv/pyenv?tab=readme-ov-file#installation)
 
 ### Apt packages
 
-`sudo apt install -y fzf jq openjdk-17-jdk unzip`
+```
+sudo apt install -y fzf jq openjdk-17-jdk unzip
+```
 
 ### Brew packages
 
-`brew install pnpm kubectx helm`
+```
+brew install pnpm kubectx helm
+```
 
 ### Helm plugins
 
