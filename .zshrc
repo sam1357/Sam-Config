@@ -11,12 +11,12 @@ if [[ ! -e ${ZIM_HOME}/zimfw.zsh ]]; then
       https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
 fi
 
-source ${ZIM_HOME}/modules/zsh-defer/zsh-defer.plugin.zsh
-
 # Install missing modules and update ${ZIM_HOME}/init.zsh if missing or outdated.
 if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZIM_CONFIG_FILE:-${ZDOTDIR:-${HOME}}/.zimrc} ]]; then
-  zsh-defer source ${ZIM_HOME}/zimfw.zsh init -q
+  source ${ZIM_HOME}/zimfw.zsh init -q
 fi
+
+source ${ZIM_HOME}/modules/zsh-defer/zsh-defer.plugin.zsh
 
 # Initialize modules.
 zsh-defer source ${ZIM_HOME}/init.zsh
@@ -60,12 +60,12 @@ export GOPATH=$HOME/go
 export PATH="$HOME/.local/bin:$PATH"
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 export PATH=~/bin:$PATH
-export PATH="$PATH:/usr/local/bin/nvim-linux64/bin"
+export PATH="$PATH:/opt/nvim-linux64/bin"
 export PATH="$PATH:/opt/gradle/gradle-8.8/bin"
 export FPATH="<path_to_eza>/completions/zsh:$FPATH"
 export PYENV_ROOT="$HOME/.pyenv"
-
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+
 . "$HOME/.cargo/env"
 
 FNM_PATH="/home/sam1357/.local/share/fnm"
