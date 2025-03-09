@@ -2,7 +2,6 @@
 
 format = """
 [╭](fg:current_line)\
-$directory\
 $git_branch\
 $git_status\
 $git_state\
@@ -20,6 +19,8 @@ $rust\
 $c\
 $lua\
 $line_break\
+[╰](fg:current_line)\
+$directory\
 $character\
 """
 
@@ -54,12 +55,8 @@ pipestatus_format = "[─](fg:current_line)[](fg:status)[ ](fg:primary bg:
 disabled = false
 
 [directory]
-format = '[─](fg:current_line)[](fg:pink)[󰷏 ](fg:primary bg:pink)[](fg:pink bg:box)[ $read_only$truncation_symbol$path](fg:foreground bg:box)[](fg:box)'
-home_symbol = " ~/"
-truncation_symbol = ' '
+format = "[─](fg:dark_gray)[ $path](fg:purple)"
 truncation_length = 2
-read_only = '󱧵 '
-read_only_style = ''
 
 [git_branch]
 format = '[─](fg:current_line)[](fg:green)[$symbol](fg:primary bg:green)[](fg:green bg:box)[ $branch ](fg:foreground bg:box)'
@@ -108,7 +105,7 @@ symbol = ' Java'
 
 [gradle]
 format = '[─](fg:current_line)[](fg:blue)[$symbol](fg:primary bg:blue)[](fg:blue bg:box)[ $version](fg:foreground bg:box)[](fg:box)'
-symbol = ' Gradle'
+symbol = ' Gradle'
 
 [golang]
 format = '[─](fg:current_line)[](fg:cyan)[$symbol](fg:primary bg:cyan)[](fg:cyan bg:box)[ $version](fg:foreground bg:box)[](fg:box)'
@@ -138,7 +135,7 @@ format = '[─](fg:current_line)[](fg:orange)[](fg:primary bg:orange)[]
 
 [character]
 format = """
-[╰─$symbol](fg:current_line) """
+[ $symbol](fg:current_line) """
 success_symbol = '[](fg:bold green)'
 error_symbol = '[](fg:bold red)'
 
